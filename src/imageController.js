@@ -4,6 +4,7 @@ var win = require('electron').remote.getCurrentWindow();
 var fs = require('fs');
 var mousetrap = require('mousetrap');
 
+
 let notification = document.querySelector("#notification");
 
 // directory/of/item/
@@ -85,14 +86,20 @@ function setImage(filePath) {
     console.log("Loading Image " + filePath);
     var stats = getFileStats(filePath);
     document.getElementById('image').src = filePath;
-    setImageData(stats.size, 0, 0, filePath);
+    var myImage = new Image();
+    myImage.src = document.getElementById('image').src;
+    myImage.onload = function()
+    {
+        setImageData(stats.size, myImage.width, myImage.height, filePath);
+    };
 }
 
 function setImageData(size, width, height, path) {
     document.getElementById("appName").innerHTML = "Pico - " + getFile(path);
+    document.getElementById("title").innerHTML = "Pico - " + getFile(path);
     document.getElementById("filePath").innerHTML = path;
     document.getElementById("fileSize").innerHTML = ((size / 1000000) > 1) ? (size / 1000000).toFixed() + "mb" : Math.round((size / 1000)) + "kb";
-    // document.getElementById("aspectRatio").innerHTML = "("+0+","+0+")";
+    document.getElementById("aspectRatio").innerHTML = "("+width+","+height+")";
     // document.getElementById("cursorLocation").innerHTML = "("+0+","+0+")";
     // document.getElementById("pixelColor").innerHTML = "#ffffff";
 }

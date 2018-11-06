@@ -14,13 +14,13 @@
 
   <script>if (window.module) module = window.module;</script>
 
-  <title>Pico - fileName</title>
+  <title id="title" >Pico</title>
 </head>
 
 <body>
   <div id="mainPane" class="selectDisable">
     <x-box class="header" id="menuBar" style="-webkit-app-region: drag">
-      <div id="appName">Pico fileName</div>
+      <div id="appName">Pico</div>
       <x-buttons id="menuButtons" tracking="-1">
         <div id="closeButton">
 
@@ -44,23 +44,24 @@
     <x-progressbar id="progressBar"></x-progressbar>
     <x-box class="footer">
       <div class="footerLeft">
-        <div class="info rightMargin" id="filePath"></div>
+        <div class="info rightMargin copyText" id="filePath"></div>
       </div>
 
       <div class="footerRight">
-        <div class="info leftMargin" id="fileSize"></div>
-        <div class="info leftMargin" id="aspectRatio"></div> 
-        <div class="info leftMargin" id="cursorLocation"></div> 
-        <div class="info leftMargin" id="pixelColor"></div>
+        <div class="info leftMargin copyText" id="fileSize"></div>
+        <div class="info leftMargin copyText" id="aspectRatio"></div> 
+        <div class="info leftMargin copyText" id="cursorLocation"></div> 
+        <div class="info leftMargin copyText" id="pixelColor"></div>
       </div>
 
     </x-box>
   </div>
   <x-notification id="notification" timeout="2000"></x-notification>
   <script>
-    require('./src/renderer.js')
-    require('./src/windowController.js')
-    require('./src/imageController.js')
+    require('./src/renderer.js');
+    require('./src/windowController.js');
+    require('./src/imageController.js');
+    require('./src/clipboard.js');
     let bar = document.querySelector("x-progressbar");
     bar.value = 0;
     // let callback = () => bar.value >= 1 ? bar.value = 0 : bar.value += 0.15;
