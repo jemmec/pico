@@ -13,7 +13,7 @@
   "author": "jemmec",
   "license": "",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": ">=2.0.8"
   },
   "dependencies": {
     "debug-menu": "^0.6.1",
