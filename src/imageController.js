@@ -4,7 +4,6 @@ var win = require('electron').remote.getCurrentWindow();
 var fs = require('fs');
 var mousetrap = require('mousetrap');
 
-
 let notification = document.querySelector("#notification");
 
 // directory/of/item/
@@ -23,7 +22,7 @@ mousetrap.bind('left', function () {
     else if (index > items.length - 1)
         index = 0;
     currentFile = items[index];
-    setImage(currentDirectory + currentFile);
+    setImage(currentDirectory + currentFile,false);
 });
 
 mousetrap.bind('right', function () {
@@ -35,7 +34,7 @@ mousetrap.bind('right', function () {
     else if (index > items.length - 1)
         index = 0;
     currentFile = items[index];
-    setImage(currentDirectory + currentFile);
+    setImage(currentDirectory + currentFile,false);
 });
 
 //Handle file from launch
@@ -71,7 +70,7 @@ document.getElementById("dropZone").ondrop = (e) => {
         var items = getImageFilesInDirectory(currentDirectory);
 
         if (fileTypes.includes(fileType.toLowerCase())) {
-            setImage(filePath);
+            setImage(filePath,true);
         }
         else {
             notification.innerHTML = "Not a recognized image file."
@@ -82,7 +81,7 @@ document.getElementById("dropZone").ondrop = (e) => {
     return false;
 }
 
-function setImage(filePath) {
+function setImage(filePath, resizeWindow) {
     console.log("Loading Image " + filePath);
     var stats = getFileStats(filePath);
     document.getElementById('image').src = filePath;
@@ -90,6 +89,8 @@ function setImage(filePath) {
     myImage.src = document.getElementById('image').src;
     myImage.onload = function()
     {
+        if(resizeWindow)
+            win.setSize(myImage.width,myImage.height,true);
         setImageData(stats.size, myImage.width, myImage.height, filePath);
     };
 }
@@ -99,7 +100,7 @@ function setImageData(size, width, height, path) {
     document.getElementById("title").innerHTML = "Pico - " + getFile(path);
     document.getElementById("filePath").innerHTML = path;
     document.getElementById("fileSize").innerHTML = ((size / 1000000) > 1) ? (size / 1000000).toFixed() + "mb" : Math.round((size / 1000)) + "kb";
-    document.getElementById("aspectRatio").innerHTML = "("+width+","+height+")";
+    document.getElementById("aspectRatio").innerHTML = width+" x "+height;
     // document.getElementById("cursorLocation").innerHTML = "("+0+","+0+")";
     // document.getElementById("pixelColor").innerHTML = "#ffffff";
 }

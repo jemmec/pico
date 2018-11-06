@@ -1,3 +1,4 @@
+
 const { ipcMain, app, BrowserWindow, globalShortcut } = require('electron');
 var mainWindow
 

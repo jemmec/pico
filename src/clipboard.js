@@ -20,3 +20,5 @@ function copyStringToClipboard (str) {
     document.execCommand('copy');
     document.body.removeChild(el);
  }
+
+ 
