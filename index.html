@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <link rel="stylesheet" href="css/photon.min.css"> -->
+  <link rel="stylesheet" href="node_modules/xel/themes/vanilla.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+  <script src='node_modules/jquery/dist/jquery.min.js'></script>
+  <script src="node_modules/xel/xel.min.js"></script>
+
+  <script>if (window.module) module = window.module;</script>
+
+  <title>Pico - fileName</title>
+</head>
+
+<body>
+  <div id="mainPane" class="selectDisable">
+    <x-box class="header" id="menuBar" style="-webkit-app-region: drag">
+      <div id="appName">Pico fileName</div>
+      <x-buttons id="menuButtons" tracking="-1">
+        <div id="closeButton">
+
+        </div>
+      </x-buttons>
+    </x-box>
+
+    <div class="horizontalSpacer"></div>
+
+    <x-box class="view" id="viewPane">
+      <!-- <div id="dropZone" class="horizontal">
+        <div class="vertical">
+          <img id="image">
+        </div>
+      </div> -->
+      <div id="dropZone">
+          <img id="image">
+      </div>
+    </x-box>
+
+    <x-progressbar id="progressBar"></x-progressbar>
+    <x-box class="footer">
+      <div class="footerLeft">
+        <div class="info rightMargin" id="filePath"></div>
+      </div>
+
+      <div class="footerRight">
+        <div class="info leftMargin" id="fileSize"></div>
+        <div class="info leftMargin" id="aspectRatio"></div> 
+        <div class="info leftMargin" id="cursorLocation"></div> 
+        <div class="info leftMargin" id="pixelColor"></div>
+      </div>
+
+    </x-box>
+  </div>
+  <x-notification id="notification" timeout="2000"></x-notification>
+  <script>
+    require('./src/renderer.js')
+    require('./src/windowController.js')
+    require('./src/imageController.js')
+    let bar = document.querySelector("x-progressbar");
+    bar.value = 0;
+    // let callback = () => bar.value >= 1 ? bar.value = 0 : bar.value += 0.15;
+    // setInterval(callback, 1000);
+  </script>
+</body>
+
+</html>
