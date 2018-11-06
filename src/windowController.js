@@ -25,10 +25,10 @@ document.getElementById("viewPane").addEventListener('click',function(){
 },false)
 
 document.getElementById("viewPane").addEventListener('dblclick',function(){
-    if(win.isMaximized())
-        win.unmaximize();
+    if(win.isFullScreen())
+        win.setFullScreen(false);
     else
-        win.maximize();
+        win.setFullScreen(true);
   },false)
 
 
