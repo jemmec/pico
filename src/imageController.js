@@ -43,13 +43,15 @@ if (data === null) {
     console.log("App opened with no file");
 } else {
     // Do something with the file.
-    console.log("data");
+    console.log("data " + data.toString());
     //open window-size the same as the image the max being the screen size
+    
 }
 
 //Handle drag-drop into dropzone
 document.getElementById("dropZone").ondrop = (e) => {
     e.preventDefault();
+
     if (e.dataTransfer.files.length > 1) {
         notification.innerHTML = "Multi-file drag not implementented."
         notification.opened = true;
@@ -79,7 +81,7 @@ document.getElementById("dropZone").ondrop = (e) => {
         }
     }
     return false;
-}
+}   
 
 function setImage(filePath, resizeWindow) {
     console.log("Loading Image " + filePath);
@@ -87,8 +89,7 @@ function setImage(filePath, resizeWindow) {
     document.getElementById('image').src = filePath;
     var myImage = new Image();
     myImage.src = document.getElementById('image').src;
-    myImage.onload = function()
-    {
+    myImage.onload = function() {
         if(resizeWindow)
             win.setSize(myImage.width,myImage.height,true);
         setImageData(stats.size, myImage.width, myImage.height, filePath);
