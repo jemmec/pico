@@ -22,7 +22,7 @@ mousetrap.bind('left', function () {
     else if (index > items.length - 1)
         index = 0;
     currentFile = items[index];
-    setImage(currentDirectory + currentFile,false);
+    setImage(currentDirectory + currentFile, false);
 });
 
 mousetrap.bind('right', function () {
@@ -34,18 +34,15 @@ mousetrap.bind('right', function () {
     else if (index > items.length - 1)
         index = 0;
     currentFile = items[index];
-    setImage(currentDirectory + currentFile,false);
+    setImage(currentDirectory + currentFile, false);
 });
 
 //Handle file from launch
 var data = ipcRenderer.sendSync('get-file-data')
 if (data === null) {
-    console.log("App opened with no file");
 } else {
-    // Do something with the file.
-    console.log("data " + data.toString());
-    //open window-size the same as the image the max being the screen size
-    
+    //Load file if it is an image
+    checkIncomingFile(data);
 }
 
 //Handle drag-drop into dropzone
@@ -59,29 +56,30 @@ document.getElementById("dropZone").ondrop = (e) => {
         return false;
     }
     else {
-
-        //TODO: Move what is in this condition to its own functions so it can be called from other events
-
-        var filePath = e.dataTransfer.files[0].path;
-        var file = getFile(filePath);
-        var fileType = getFileType(file);
-
-        currentFile = file;
-        currentDirectory = filePath.replace(file, "");
-
-        var items = getImageFilesInDirectory(currentDirectory);
-
-        if (fileTypes.includes(fileType.toLowerCase())) {
-            setImage(filePath,true);
-        }
-        else {
-            notification.innerHTML = "Not a recognized image file."
-            notification.opened = true;
-            console.log("Not a recognized image");
-        }
+        checkIncomingFile(e.dataTransfer.files[0].path);
     }
     return false;
-}   
+}
+
+function checkIncomingFile(filePath) {
+    var file = getFile(filePath);
+    var fileType = getFileType(file);
+
+    currentFile = file;
+    currentDirectory = filePath.replace(file, "");
+
+    // var items = getImageFilesInDirectory(currentDirectory);
+
+    if (fileTypes.includes(fileType.toLowerCase())) {
+        setImage(filePath, true);
+    }
+    else {
+        notification.innerHTML = "Not a recognized image file."
+        notification.opened = true;
+        console.log("Not a recognized image");
+    }
+}
+
 
 function setImage(filePath, resizeWindow) {
     console.log("Loading Image " + filePath);
@@ -89,9 +87,9 @@ function setImage(filePath, resizeWindow) {
     document.getElementById('image').src = filePath;
     var myImage = new Image();
     myImage.src = document.getElementById('image').src;
-    myImage.onload = function() {
-        if(resizeWindow)
-            win.setSize(myImage.width,myImage.height,true);
+    myImage.onload = function () {
+        if (resizeWindow)
+            win.setSize(myImage.width, myImage.height, true);
         setImageData(stats.size, myImage.width, myImage.height, filePath);
     };
 }
@@ -101,7 +99,7 @@ function setImageData(size, width, height, path) {
     document.getElementById("title").innerHTML = "Pico - " + getFile(path);
     document.getElementById("filePath").innerHTML = path;
     document.getElementById("fileSize").innerHTML = ((size / 1000000) > 1) ? (size / 1000000).toFixed() + "mb" : Math.round((size / 1000)) + "kb";
-    document.getElementById("aspectRatio").innerHTML = width+" x "+height;
+    document.getElementById("aspectRatio").innerHTML = width + " x " + height;
     // document.getElementById("cursorLocation").innerHTML = "("+0+","+0+")";
     // document.getElementById("pixelColor").innerHTML = "#ffffff";
 }
@@ -130,8 +128,7 @@ function getImageFilesInDirectory(path) {
     return returnItems;
 }
 
-function getFileStats(path)
-{
+function getFileStats(path) {
     var stat = fs.statSync(path);
     return stat;
 }
