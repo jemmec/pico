@@ -6,8 +6,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 720,
-        'minWidth': 600,
-        'minHeight': 400,
+        'minWidth': 128,
+        'minHeight': 128,
         'acceptFirstMouse': true,
         frame: false,
         backgroundColor: '#202020',

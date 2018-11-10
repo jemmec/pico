@@ -4,6 +4,8 @@ var win = require('electron').remote.getCurrentWindow();
 var fs = require('fs');
 var mousetrap = require('mousetrap');
 
+let alert = document.getElementById("alert");
+
 let notification = document.querySelector("#notification");
 
 // directory/of/item/
@@ -42,7 +44,10 @@ var data = ipcRenderer.sendSync('get-file-data')
 if (data === null) {
 } else {
     //Load file if it is an image
-    checkIncomingFile(data);
+    if (fileTypes.includes(getFileType(data).toLowerCase()))
+    {
+        checkIncomingFile(data);
+    }
 }
 
 //Handle drag-drop into dropzone
@@ -50,8 +55,7 @@ document.getElementById("dropZone").ondrop = (e) => {
     e.preventDefault();
 
     if (e.dataTransfer.files.length > 1) {
-        notification.innerHTML = "Multi-file drag not implementented."
-        notification.opened = true;
+        ShowAlert("Multi-file drop not implementented.",2000);
         console.log("Multi-file drag not implementented");
         return false;
     }
@@ -74,12 +78,12 @@ function checkIncomingFile(filePath) {
         setImage(filePath, true);
     }
     else {
-        notification.innerHTML = "Not a recognized image file."
-        notification.opened = true;
+        // notification.innerHTML = "Not a recognized image file."
+        // notification.opened = true;
+        ShowAlert("Not a recognized image file.",2000);
         console.log("Not a recognized image");
     }
 }
-
 
 function setImage(filePath, resizeWindow) {
     console.log("Loading Image " + filePath);
@@ -112,11 +116,13 @@ function getFile(path) {
     return path.substring(path.lastIndexOf('\\') + 1);
 }
 
+//Returns an array of all the files in the given directory
 function getFilesInDirectory(path) {
     var items = fs.readdirSync(path);
     return items;
 }
 
+//returns all of the image files in the given directory
 function getImageFilesInDirectory(path) {
     var items = fs.readdirSync(path);
     var returnItems = new Array();
@@ -131,4 +137,18 @@ function getImageFilesInDirectory(path) {
 function getFileStats(path) {
     var stat = fs.statSync(path);
     return stat;
+}
+
+
+function ShowAlert(message,timeout) {
+    alert.innerHTML = message;
+    alert.classList.remove("hide");
+    alert.classList.add("show");
+    setTimeout(() => {
+        alert.classList.remove("show");
+        alert.classList.add("hide");
+        setTimeout(() => {
+            alert.classList.remove("hide");
+        }, 300);
+    }, timeout);
 }

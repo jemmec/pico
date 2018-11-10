@@ -21,6 +21,7 @@
 
 <body>
   <div id="mainPane" class="selectDisable">
+
     <x-box class="header" id="menuBar" style="-webkit-app-region: drag;">
       <div id="appName">Pico</div>
       <x-buttons id="menuButtons" tracking="-1">
@@ -29,15 +30,16 @@
         </div>
       </x-buttons>
     </x-box>
-
     <div class="horizontalSpacer"></div>
+
 
     <x-box class="view" id="viewPane">
       <div id="dropZone">
         <img id="image">
       </div>
     </x-box>
-
+    
+    <div id="alert">alert message!</div>
     <x-progressbar id="progressBar"></x-progressbar>
     <x-box class="footer">
       <div class="footerLeft">
@@ -61,8 +63,8 @@
     require('./src/clipboard.js');
     let bar = document.querySelector("x-progressbar");
     bar.value = 0;
-    // let callback = () => bar.value >= 1 ? bar.value = 0 : bar.value += 0.15;
-    // setInterval(callback, 1000);
+    let callback = () => bar.value >= 1 ? bar.value = 0 : bar.value += 0.15;
+    setInterval(callback, 1000);
   </script>
 </body>
 

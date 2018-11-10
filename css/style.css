@@ -56,6 +56,8 @@
     color: rgb(126,126,126);
 }
 
+#notification{
+}
 
 div.horizontal {
     display: flex;
@@ -162,6 +164,7 @@ body{
 }
 
 html{
+    overflow-x: hidden;
     padding: 5px;
     box-sizing: border-box;
     background-color: rgb(32,32,32);
@@ -193,4 +196,28 @@ html{
 
 .info:hover{
     background-color: rgb(48,48,48);
+}
+
+#alert{
+    text-align:center;
+    mix-blend-mode: difference;
+    color:rgb(226,226,226);
+    position: absolute;
+    bottom: 20px;
+    left: 0%;
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateX(-50%) translateY(-50%);
+    transition: all ease-in-out 300ms;
+}
+
+#alert.show{
+    left: 50%;
+    opacity: 1;
+}
+
+#alert.hide{
+    left: 100%;
+    opacity: 0;
 }
