@@ -8,7 +8,7 @@ for(var i = 0; i < copyables.length; i++)
         copyStringToClipboard(this.innerHTML);
         ShowAlert("Copied",2000);
     });
-}
+} 
 
 function copyStringToClipboard (str) {
     var el = document.createElement('textarea');

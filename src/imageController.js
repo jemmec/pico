@@ -14,6 +14,14 @@ let currentFile = new String();
 
 var fileTypes = ['.png', '.jpg', '.gif', '.svg', '.jpeg'];
 
+//Zoom
+var image = document.getElementById("image");
+var pos = { x: 0, y: 0 };
+var zoomTarget = { x: 0, y: 0 };
+var zoomPoint = { x: 0, y: 0 };
+var scale = 1;
+
+
 //Move to previous picture in item list
 mousetrap.bind('left', function () {
     var items = getImageFilesInDirectory(currentDirectory);
@@ -44,8 +52,7 @@ var data = ipcRenderer.sendSync('get-file-data')
 if (data === null) {
 } else {
     //Load file if it is an image
-    if (fileTypes.includes(getFileType(data).toLowerCase()))
-    {
+    if (fileTypes.includes(getFileType(data).toLowerCase())) {
         checkIncomingFile(data);
     }
 }
@@ -55,7 +62,7 @@ document.getElementById("dropZone").ondrop = (e) => {
     e.preventDefault();
 
     if (e.dataTransfer.files.length > 1) {
-        ShowAlert("Multi-file drop not implementented.",2000);
+        ShowAlert("Multi-file drop not implementented.", 2000);
         console.log("Multi-file drag not implementented");
         return false;
     }
@@ -75,12 +82,12 @@ function checkIncomingFile(filePath) {
     // var items = getImageFilesInDirectory(currentDirectory);
 
     if (fileTypes.includes(fileType.toLowerCase())) {
-        setImage(filePath, true);
+        setImage(filePath, false);
     }
     else {
         // notification.innerHTML = "Not a recognized image file."
         // notification.opened = true;
-        ShowAlert("Not a recognized image file.",2000);
+        ShowAlert("Not a recognized image file.", 2000);
         console.log("Not a recognized image");
     }
 }
@@ -95,6 +102,9 @@ function setImage(filePath, resizeWindow) {
         if (resizeWindow)
             win.setSize(myImage.width, myImage.height, true);
         setImageData(stats.size, myImage.width, myImage.height, filePath);
+        //Set the sacle back to 1 when loading a new image
+        scale = 1;
+        updateImageScale(0, 0, scale);
     };
 }
 
@@ -140,7 +150,7 @@ function getFileStats(path) {
 }
 
 
-function ShowAlert(message,timeout) {
+function ShowAlert(message, timeout) {
     alert.innerHTML = message;
     alert.classList.remove("hide");
     alert.classList.add("show");
@@ -151,4 +161,51 @@ function ShowAlert(message,timeout) {
             alert.classList.remove("hide");
         }, 300);
     }, timeout);
+}
+
+//resize
+window.addEventListener('resize', function(){
+    updateImageScale(0, 0, scale);
+}, false);
+
+
+//Zoom
+document.getElementById("mainPane").addEventListener('wheel', function (event) {
+    event.preventDefault();
+
+    // zoomPoint.x = event.pageX;
+    // zoomPoint.y = event.pageY;
+    // var delta = event.deltaY;
+    // delta = Math.max(-1,Math.min(1,delta));
+
+    // zoomTarget.x = (zoomPoint.x - pos.x)/scale;
+    // zoomTarget.y = (zoomPoint.y - pos.y)/scale;
+
+    // scale += delta * 0.5 * scale;
+    // scale = Math.max(1,Math.min(50,scale));
+
+    // pos.x = -zoomTarget.x * scale + zoomPoint.x;
+    // pos.y = -zoomTarget.y * scale + zoomPoint.y;
+
+    // if(pos.x > 0)
+    //     pos.x = 0;
+    // if(pos.x+size.w*scale<size.w)
+    //     pos.x = -size.w*(scale-1);
+    // if(pos.y > 0)
+    //     pos.y = 0;
+    // if(pos.y+size.h*scale<size.h)
+    //     pos.y = -size.h*(scale-1);
+
+    var delta = event.deltaY * -1;
+    delta = Math.max(-1, Math.min(1, delta));
+    scale += 0.5 * delta;
+    if (scale < 1)
+        scale = 1;
+    updateImageScale(0, 0, scale);
+})
+
+
+function updateImageScale(offsetX, offsetY, scale) {
+    var size = { w: image.offsetWidth, h: image.offsetHeight };
+    image.style.transform = "translate(" + (-size.w / 2 + (offsetX)) + "px," + (-size.h / 2 + (offsetY)) + "px) scale(" + scale + "," + scale + ")";
 }

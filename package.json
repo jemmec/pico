@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
+  "name": "pico",
   "version": "1.0.0",
-  "description": "Picture Viewer",
+  "description": "Eletron picture viewer",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "debug-menu": "^0.6.1",
+    "electron-winstaller": "^2.7.0",
     "jquery": "^3.3.1",
     "material-design-icons": "^3.0.1",
     "mousetrap": "^1.6.2",

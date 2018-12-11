@@ -7,8 +7,12 @@ var win = require('electron').remote.getCurrentWindow();
 
 'use strict';
 
-//Prevent default drag-drop actions
+//Once dom ready
+win.webContents.once('dom-ready', () => {
+    UpdateSpacerSizes();
+})
 
+//Prevent default drag-drop actions
 document.addEventListener('dragover', function (event) {
     event.preventDefault();
     return false;
@@ -48,4 +52,21 @@ document.getElementById("closeButton").addEventListener('click', function () {
     console.log("Closed");
     app.quit();
 }, false)
+
+//Window resize
+window.addEventListener('resize', function(e){
+    e.preventDefault();
+    UpdateSpacerSizes();
+}, false)
+
+function UpdateSpacerSizes()
+{
+    var horizontalSpacers = document.getElementsByClassName('horizontalSpacer');
+    for(var i = 0; i < horizontalSpacers.length; i ++)
+    {
+        horizontalSpacers[i].style["width"] = (win.getBounds().width-60) + 'px';
+    }
+}
+
+
 
