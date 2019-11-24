@@ -1,2 +1,2 @@
 # pico
-Image viewing app
+Image viewing app made with electron
